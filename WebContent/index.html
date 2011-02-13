@@ -8,22 +8,34 @@
 </head>
 <body>
 <form id="file_upload" action="upload" method="POST" enctype="multipart/form-data">
-    <input type="file" name="file" multiple>
+    <input type="file" name="file1" id="file1" multiple>
     <button>Upload</button>
     <div>Upload files</div>
+    
+    <!-- This breaks the upload -->
+    <input type="file" name="file2" id="file2" multiple>
+    <button>Upload</button>
+    <div>Upload files</div>
+    <!-- -->
 </form>
-<table id="files"></table>
+<table id="file1_files"></table>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
 <script src="fileupload/jquery.fileupload.js"></script>
 <script src="fileupload/jquery.fileupload-ui.js"></script>
 <script>
-/*global $ */
-$(function () {
+
+$(document).ready(function() {
+	initUpload('file1');	
+});
+
+function initUpload(uniqueId) {
     $('#file_upload').fileUploadUI({
-        uploadTable: $('#files'),
-        downloadTable: $('#files'),
+    	namespace: uniqueId,
+    	fileInputFilter: '#' + uniqueId,
+        uploadTable: $('#'+ uniqueId + '_files'),
+        downloadTable: $('#'+ uniqueId + '_files'),
         buildUploadRow: function (files, index) {
             return $('<tr><td>' + files[index].name + '<\/td>' +
                     '<td class="file_upload_progress"><div><\/div><\/td>' +
@@ -36,7 +48,7 @@ $(function () {
             return $('<tr><td>' + file.name + '<\/td><\/tr>');
         }
     });
-});
+}
 </script> 
 
 </body>
